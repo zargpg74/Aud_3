@@ -5,6 +5,39 @@
 
 #include"Massive.h"
 
+int Mass(int* mass, int n, int* mass1)//возвращает массив где первый элемент это его полезная длина. Далее массив перебирать от 1 элемента
+{
+	int l = 0, count = 0;
+
+	for (int i = 0; i < n; i++)
+	{
+		count = 0;
+		for (int j = 0; j <= i; j++)
+		{
+			if (i != j)
+			{
+				if (mass[j] == mass[i])
+					count++;
+			}
+		}
+		if (count > 0)
+			continue;
+
+		mass1 = (int*)realloc(mass1, (l + 1) * sizeof(int));
+		mass1[l] = mass[i];
+		l++;
+	}
+
+	mass1 = (int*)realloc(mass1, (l + 1) * sizeof(int));
+	for (int i = l; i>0; i--)
+	{
+		mass1[i] = mass1[i - 1];
+	}
+
+	mass1[0] = l;
+
+	return(mass1);
+}
 
 void Massive()
 {
@@ -30,30 +63,12 @@ void Massive()
 		printf("%d ", mass[i]);
 	}
 
-	int* mass1 = NULL;
-	int l = 0, count = 0;
-
-	for (int i = 0; i < n; i++)
-	{
-		count = 0;
-		for (int j = 0; j <= i; j++)
-		{
-			if (i != j)
-			{
-				if (mass[j] == mass[i])
-					count++;
-			}
-		}
-		if (count > 0)
-			continue;
-
-		mass1 = (int*)realloc(mass1, (l + 1) * sizeof(int));
-		mass1[l] = mass[i];
-		l++;
-	}
+	int* mass1=NULL;
+	mass1 = Mass(mass, n, mass1);
+	int l = mass1[0];
 
 	printf("\nИсправленный массив: ");
-	for (int i = 0; i < l; i++)
+	for (int i = 1; i <= l; i++)
 	{
 		printf("%d ", mass1[i]);
 	}
